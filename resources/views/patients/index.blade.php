@@ -36,9 +36,10 @@
                         <td class="px-4 py-3">{{ $patient->name }}</td>
                         <td class="px-4 py-3">{{ $patient->age }}</td>
                         <td class="px-4 py-3">{{ $patient->gender }}</td>
-                        <td class="px-4 py-3 flex items-center space-x-2">
-                            <button class="text-blue-600 hover:text-blue-800 font-medium">Rekam Medis</button>
-                            <button class="text-gray-600 hover:text-gray-800 font-medium">Edit</button>
+                        <td class="px-6 py-4 flex gap-3">
+                            {{-- Perhatikan penggunaan $patient di bawah ini --}}
+                            <a href="{{ route('medical-records.create', $patient->id) }}" class="font-medium text-blue-600 hover:underline">Rekam Medis</a>
+                            <a href="{{ route('patients.edit', $patient->id) }}" class="font-medium text-gray-600 hover:underline">Edit</a>
                         </td>
                     </tr>
                     @endforeach
