@@ -83,7 +83,7 @@
               </div>
               <div class="flex flex-col">
                   <span class="text-xl font-black tracking-tight text-slate-800">
-                    MANDIRI<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">ACU</span>
+                    MANDIRI<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">AKUPUNTUR</span>
                   </span>
                   <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest -mt-0.5">Sistem Klinik v1.0</span>
               </div>
