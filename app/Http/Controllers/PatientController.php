@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
@@ -9,11 +8,15 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $patients = Patient::when($search, function($query, $search) {
-            return $query->where('name', 'like', "%{$search}%")
-                         ->orWhere('registration_number', 'like', "%{$search}%");
-        })->latest()->paginate(10);
+        $query = Patient::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('registration_number', 'like', "%{$search}%");
+        }
+
+        $patients = $query->latest()->paginate(10)->withQueryString();
 
         return view('patients.index', compact('patients'));
     }
@@ -27,14 +30,38 @@ class PatientController extends Controller
     {
         $validated = $request->validate([
             'registration_number' => 'required|unique:patients',
-            'name' => 'required|string|max:255',
-            'age' => 'required|integer',
+            'name' => 'required',
+            'age' => 'required|numeric',
             'gender' => 'required|in:L,P',
-            'phone' => 'nullable|string',
         ]);
 
         Patient::create($validated);
 
-        return redirect()->route('patients.index')->with('success', 'Data pasien berhasil ditambahkan.');
+        return redirect()->route('patients.index')->with('success', 'Pasien berhasil ditambahkan');
+    }
+
+    public function edit(Patient $patient)
+    {
+        return view('patients.edit', compact('patient'));
+    }
+
+    public function update(Request $request, Patient $patient)
+    {
+        $validated = $request->validate([
+            'registration_number' => 'required|unique:patients,registration_number,' . $patient->id,
+            'name' => 'required',
+            'age' => 'required|numeric',
+            'gender' => 'required|in:L,P',
+        ]);
+
+        $patient->update($validated);
+
+        return redirect()->route('patients.index')->with('success', 'Data pasien berhasil diperbarui');
+    }
+
+    public function destroy(Patient $patient)
+    {
+        $patient->delete();
+        return redirect()->route('patients.index')->with('success', 'Pasien berhasil dihapus');
     }
 }
