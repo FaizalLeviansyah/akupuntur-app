@@ -64,4 +64,13 @@ class PatientController extends Controller
         $patient->delete();
         return redirect()->route('patients.index')->with('success', 'Pasien berhasil dihapus');
     }
+
+    public function show(Patient $patient)
+    {
+        $patient->load(['medicalRecords' => function($query) {
+            $query->latest();
+        }]);
+
+        return view('patients.show', compact('patient'));
+    }
 }

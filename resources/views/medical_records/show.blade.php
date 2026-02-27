@@ -2,14 +2,23 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto mb-10">
-    <div class="flex justify-between items-center mb-4 print:hidden">
-        <a href="{{ route('patients.index') }}" class="text-blue-600 hover:underline flex items-center">
-            &larr; Kembali ke Daftar Pasien
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 print:hidden gap-4">
+        <a href="{{ route('patients.index') }}" class="text-slate-500 hover:text-blue-600 font-bold text-sm flex items-center gap-2 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Kembali ke Direktori
         </a>
-        <button onclick="window.print()" class="text-white bg-gray-800 hover:bg-gray-900 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-            Cetak Rekam Medis
-        </button>
+
+        <div class="flex gap-3 w-full sm:w-auto">
+            <button onclick="window.print()" class="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold rounded-xl text-sm px-5 py-2.5 flex items-center justify-center gap-2 shadow-sm transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Cetak Printer
+            </button>
+
+            <a href="{{ route('medical-records.pdf', [$patient->id, $record->id]) }}" class="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 font-bold rounded-xl text-sm px-5 py-2.5 flex items-center justify-center gap-2 shadow-lg shadow-red-500/30 transition-transform transform hover:-translate-y-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Unduh PDF
+            </a>
+        </div>
     </div>
 
     <div class="bg-white p-8 sm:p-12 rounded-lg shadow-lg print:shadow-none print:p-0">
