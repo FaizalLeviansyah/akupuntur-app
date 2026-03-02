@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\MedicalRecordController;
-use App\Http\Controllers\Admin\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\PatientManager;
+use App\Livewire\UserManager;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -22,10 +23,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Manajemen Pasien
-    Route::resource('patients', PatientController::class);
+    // SPA Livewire: Tabel Manajemen Pasien
+    Route::get('/patients', PatientManager::class)->name('patients.index');
+    // Halaman Detail (Timeline Pasien) menggunakan Controller Biasa
+    Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
 
-    // Rekam Medis
+    // Form Rekam Medis & Cetak PDF (Controller Biasa)
     Route::get('patients/{patient}/medical-records/create', [MedicalRecordController::class, 'create'])->name('medical-records.create');
     Route::post('patients/{patient}/medical-records', [MedicalRecordController::class, 'store'])->name('medical-records.store');
     Route::get('patients/{patient}/medical-records/{record}', [MedicalRecordController::class, 'show'])->name('medical-records.show');
@@ -34,8 +37,9 @@ Route::middleware('auth')->group(function () {
 
 // KELOMPOK RUTE KHUSUS (Hanya Super Admin)
 Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('users', UserController::class);
-    // Nanti rute pengaturan Keluhan ditaruh di sini
+    // SPA Livewire: Tabel Manajemen Pengguna
+    // PERBAIKAN: Namanya cukup 'users.index' karena sudah ada prefix 'admin.' di group atasnya
+    Route::get('/users', UserManager::class)->name('users.index');
 });
 
 require __DIR__.'/auth.php';
